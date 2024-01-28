@@ -115,7 +115,7 @@ public class IdManager {
      * 制造ID
      * 通过给定的ID元素来制造ID
      */
-    long makeId(long time, long seq) {
+    public long makeId(long time, long seq) {
         return defaultIdService.makeId(time, seq);
     }
 

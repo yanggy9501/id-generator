@@ -1,0 +1,10 @@
+nettysrv:
+  port: 12380
+
+id:
+  generator:
+    genMethod: 2
+    provider: property
+    machineId: 1
+#    epoch: 1420041600000
+

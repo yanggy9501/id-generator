@@ -12,7 +12,7 @@ public class PropertyMachineIdProvider implements MachineIdProvider {
     private long machineId;
 
     public PropertyMachineIdProvider(long machineId) {
-        if (getMachineId() <= 0 || getMachineId() >= 1024) {
+        if (machineId < 0 || machineId >= 1024) {
             throw new RuntimeException("machine id should: 0 <= id < 1024");
         }
         this.machineId = machineId;
