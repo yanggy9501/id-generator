@@ -122,15 +122,15 @@ public class RestNettyServerHandler extends ChannelInboundHandlerAdapter {
             } else if (version == -1) {
                 if (type == -1) {
                     if (genmethod == -1) {
-                        madeId = machine == -1 ? idManager.makeId(time, seq) : idManager.makeId(machine, time, seq);
+                        madeId = machine == -1 ? idManager.makeId(time, seq) : idManager.makeId(time, seq, machine);
                     } else {
-                        madeId = idManager.makeId(genmethod, machine, time, seq);
+                        madeId = idManager.makeId(genmethod, time, seq, machine);
                     }
                 } else {
-                    madeId = idManager.makeId(type, genmethod, machine, time, seq);
+                    madeId = idManager.makeId(type, genmethod, time, seq, machine);
                 }
             } else {
-                madeId = idManager.makeId(version, type, genmethod, machine, time, seq);
+                madeId = idManager.makeId(version, type, genmethod, time, seq, machine);
             }
 
 			logger.trace("Id: {}", madeId);

@@ -1,0 +1,10 @@
+server:
+  port: 12380
+
+id:
+  generator:
+    # tomcat 发布模式必须为 2
+    genMethod: 2
+    provider: "ip"
+    ipFilePath: "classpath:ip.properties"
+

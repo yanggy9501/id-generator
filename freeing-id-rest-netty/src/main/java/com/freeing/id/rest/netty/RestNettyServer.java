@@ -36,7 +36,7 @@ public class RestNettyServer {
                 .childHandler(new RestNettyServerInitializer());
 
             Channel ch = bootstrap.bind(port).sync().channel();
-            logger.info("RestNettyServer is started on {}.", port);
+            logger.info("RestNettyServer started on port: {}.", port);
 
             ch.closeFuture().sync();
         } finally {

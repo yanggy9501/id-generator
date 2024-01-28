@@ -1,5 +1,4 @@
 id:
   generator:
     provider: ip
-#    ipFilePath: "classpath:ip.properties"
-    ipFilePath: "E:\\volume\\tmp\\ip.properties"
+    ipFilePath: "classpath:ip.properties"

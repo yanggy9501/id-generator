@@ -3,7 +3,7 @@ nettysrv:
 
 id:
   generator:
-    # 发布模式必须为 1
+    # netty 发布模式必须为 1
     genMethod: 1
     provider: property
     machineId: 1
