@@ -10,6 +10,5 @@ import org.springframework.context.annotation.ComponentScan;
 public class IdApplicationStarter {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(IdApplicationStarter.class, args);
-        System.out.println(ctx.getEnvironment().getProperty("id.generator.provider"));
     }
 }
