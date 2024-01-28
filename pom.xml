@@ -12,7 +12,6 @@
         <module>freeing-id-core</module>
         <module>freeing-id-service</module>
         <module>freeing-id-sample</module>
-        <module>freeing-id-sample/freeing-id-sample-idservice</module>
         <module>freeing-id-spring</module>
     </modules>
 
@@ -28,18 +27,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.12</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.0.13</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>1.0.13</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
