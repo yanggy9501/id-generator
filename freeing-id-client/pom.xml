@@ -9,11 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>freeing-id-rest-netty</artifactId>
-    <description>REST发布模式（Netty)</description>
+    <artifactId>freeing-id-client</artifactId>
+    <description>客服端嵌入模式</description>
 
     <properties>
-        <netty.version>4.1.90.Final</netty.version>
         <springboot.version>2.3.2.RELEASE</springboot.version>
 
         <maven.compiler.source>8</maven.compiler.source>
@@ -32,18 +31,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>${springboot.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
         </dependency>
     </dependencies>
 </project>

@@ -3,7 +3,8 @@ nettysrv:
 
 id:
   generator:
-    genMethod: 2
+    # 发布模式必须为 1
+    genMethod: 1
     provider: property
     machineId: 1
 #    epoch: 1420041600000

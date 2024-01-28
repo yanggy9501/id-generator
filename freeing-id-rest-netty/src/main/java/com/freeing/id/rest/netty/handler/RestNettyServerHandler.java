@@ -159,7 +159,7 @@ public class RestNettyServerHandler extends ChannelInboundHandlerAdapter {
 
         boolean keepAlive = isKeepAlive(req);
 
-            logger.trace("Keep Alive: {}", keepAlive);
+        logger.trace("Keep Alive: {}", keepAlive);
 
         if (!keepAlive) {
             ctx.write(response).addListener(ChannelFutureListener.CLOSE);

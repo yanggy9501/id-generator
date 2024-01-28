@@ -14,6 +14,8 @@
         <module>freeing-id-sample</module>
         <module>freeing-id-spring</module>
         <module>freeing-id-rest-netty</module>
+        <module>freeing-id-rest-webmvc</module>
+        <module>freeing-id-client</module>
     </modules>
 
     <properties>
