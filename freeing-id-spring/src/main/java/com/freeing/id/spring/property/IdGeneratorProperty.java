@@ -28,7 +28,10 @@ public class IdGeneratorProperty {
     @Value("${id.generator.version:0}")
     private long version;
 
-    @Value("${id.generator.machineId}")
+    /**
+     * 机器ID：PropertyMachineIdProvider 需要配置
+     */
+    @Value("${id.generator.machineId:0}")
     private long machineId;
 
     public long getEpoch() {

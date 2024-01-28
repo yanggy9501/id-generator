@@ -11,11 +11,9 @@ public class PropertyMachineIdProvider implements MachineIdProvider {
      */
     private long machineId;
 
-    public PropertyMachineIdProvider() {
-    }
-
     public PropertyMachineIdProvider(long machineId) {
         this.machineId = machineId;
+        validateMachineId();
     }
 
     @Override

@@ -8,9 +8,9 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         IdManager idManager = context.getBean(IdManager.class);
-        IdGeneratorAutoConfig d = context.getBean(IdGeneratorAutoConfig.class);
+        IdGeneratorAutoConfig config = context.getBean(IdGeneratorAutoConfig.class);
         for (int i = 0; i < 10000; i++) {
-            long id = idManager.nextId();
+            long id = idManager.genId();
             System.out.println(id);
             System.out.println(idManager.expId(id));
         }

@@ -5,6 +5,7 @@ import com.freeing.id.core.provider.MachineIdProvider;
 import com.freeing.id.core.provider.impl.DefaultMachineIdProvider;
 import com.freeing.id.core.provider.impl.PropertyMachineIdProvider;
 import com.freeing.id.manager.IdManager;
+import com.freeing.id.service.AbstractIdService;
 import com.freeing.id.service.impl.IdServiceLockImpl;
 import com.freeing.id.spring.property.IdGeneratorProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class IdGeneratorAutoConfig {
     @Bean
     @ConditionalOnBean(MachineIdProvider.class)
     public IdManager idManager(MachineIdProvider machineIdProvider) {
-        IdServiceLockImpl idService = new IdServiceLockImpl(IdType.parse((int)idGeneratorProperty.getType()));
-        idService.setEpoch(idGeneratorProperty.getEpoch());
-        idService.setVersion(idGeneratorProperty.getVersion());
-        idService.setMachineIdProvider(machineIdProvider);
-        idService.setGenMethod(idGeneratorProperty.getGenMethod());
-        return new IdManager(idService);
+        AbstractIdService defaultIdService = new IdServiceLockImpl(IdType.parse((int)idGeneratorProperty.getType()),
+                                                                    machineIdProvider);
+        defaultIdService.setEpoch(idGeneratorProperty.getEpoch());
+        defaultIdService.setVersion(idGeneratorProperty.getVersion());
+        defaultIdService.setGenMethod(idGeneratorProperty.getGenMethod());
+        return new IdManager(defaultIdService);
     }
 }

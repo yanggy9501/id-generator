@@ -11,22 +11,25 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ID 管理器, 管理所有业务场景的ID生成
+ * ID 管理器, 管理所有业务场景的ID生成器, 不同的业务可能是可以存在相同的 ID
  */
 public class IdManager {
     private static final Logger logger = LoggerFactory.getLogger(IdManager.class);
 
+    /**
+     * 一次能获取最大的ID数量
+     */
+    private static int MAX_ID_GET_NUM = 1024;
+
     private final Map<String /* 业务KEY */, IdService /* 业务KEY的ID生成器 */> ID_SERVICE_MAP = new ConcurrentHashMap<>();
+
     /**
      * 默认的ID生成器
      */
     private final IdService defaultIdService;
 
-    public IdManager(AbstractIdService defaultIdService) {
+    public IdManager(IdService defaultIdService) {
         this.defaultIdService = defaultIdService;
-        if (!defaultIdService.isInitOK()) {
-            defaultIdService.init();
-        }
     }
 
     public void registry(String key, AbstractIdService idService) {
@@ -43,20 +46,50 @@ public class IdManager {
      * 产生ID
      * 根据系统时间产生一个全局唯一的ID
      */
-    public long nextId() {
+    public long genId() {
         return defaultIdService.genId();
+    }
+
+    /**
+     * 产生ID
+     * 根据系统时间产生一批全局唯一的ID
+     */
+    public long[] genIds(int size) {
+        if (size < 0 || size > MAX_ID_GET_NUM) {
+            throw new IllegalArgumentException("size shoud : 0 < size <= 1024");
+        }
+        long[] ids = new long[size];
+        for (int i = 0; i < size; i++) {
+            ids[i] = defaultIdService.genId();
+        }
+        return ids;
+    }
+
+    /**
+     * 产生ID
+     * 根据系统时间产生一批全局唯一的ID
+     */
+    public long genId(String key) {
+        if (ID_SERVICE_MAP.containsKey(key)) {
+            return ID_SERVICE_MAP.get(key).genId();
+        }
+        logger.warn("Id service of {} is not existing.", key);
+        throw new IllegalArgumentException("Id service is not existing of " + key);
     }
 
     /**
      * 产生ID
      * 根据系统时间产生一个全局唯一的ID
      */
-    public long nextId(String key) {
-        if (ID_SERVICE_MAP.containsKey(key)) {
-            return ID_SERVICE_MAP.get(key).genId();
+    public long[] genId(String key, int size) {
+        if (size < 0 || size > MAX_ID_GET_NUM) {
+            throw new IllegalArgumentException("size shoud : 0 < size <= 1024");
         }
-        logger.warn("Id service of {} is not existing.", key);
-        throw new IllegalArgumentException("Id service is not existing of " + key);
+        long[] ids = new long[size];
+        for (int i = 0; i < size; i++) {
+            ids[i] = genId(key);
+        }
+        return ids;
     }
 
     /**

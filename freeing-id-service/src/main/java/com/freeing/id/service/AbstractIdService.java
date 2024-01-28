@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 
 /**
- * @author yanggy
+ * 基础的id服务类
+ * PS: epoch、genMethod、version 根据需要进行自定义配置
  */
 public abstract class AbstractIdService implements IdService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -38,21 +39,23 @@ public abstract class AbstractIdService implements IdService {
     protected IdConverter idConverter;
     protected MachineIdProvider machineIdProvider;
 
-    public AbstractIdService() {
-        this(IdType.MAX_PEAK);
+    public AbstractIdService(MachineIdProvider machineIdProvider) {
+        this(IdType.MAX_PEAK, machineIdProvider);
     }
 
-    public AbstractIdService(IdType type) {
+    public AbstractIdService(IdType type, MachineIdProvider machineIdProvider) {
         idType = type;
         idMeta = IdMetaFactory.getIdMeta(idType);
+        this.machineIdProvider = machineIdProvider;
+        init();
     }
 
     public void init() {
         this.machineId = machineIdProvider.getMachineId();
-        if (machineId < 0) {
-            logger.error("The machine ID is not configured properly so that id Service refuses to start.");
+        if (machineId < 0 || machineId >= 1024) {
+            logger.error("The machine ID is not configured less than 1024 and more than 0 so that id Service refuses to start.");
             throw new IllegalStateException(
-                "The machine ID is not configured properly so that Vesta Service refuses to start.");
+                "The machine ID is not configured properly less than 1024 and more than 0 so that ID Service refuses to start.");
         }
 
         this.type = idType.getCode();

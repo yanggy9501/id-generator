@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * IdConverter 实现类
+ * IdConverter 唯一实现类
  */
 public class IdConverterImpl implements IdConverter {
     private static final Logger logger = LoggerFactory.getLogger(IdConverter.class);

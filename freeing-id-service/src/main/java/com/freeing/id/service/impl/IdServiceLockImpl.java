@@ -2,6 +2,7 @@ package com.freeing.id.service.impl;
 
 import com.freeing.id.core.bean.Id;
 import com.freeing.id.core.enums.IdType;
+import com.freeing.id.core.provider.MachineIdProvider;
 import com.freeing.id.service.AbstractIdService;
 import com.freeing.id.service.IdService;
 
@@ -24,12 +25,15 @@ public class IdServiceLockImpl extends AbstractIdService implements IdService {
 
     private final Lock lock = new ReentrantLock();
 
-    public IdServiceLockImpl() {
-
+    /**
+     * 构造方法, 默认最大峰值型
+     */
+    public IdServiceLockImpl(MachineIdProvider machineIdProvider) {
+        super(machineIdProvider);
     }
 
-    public IdServiceLockImpl(IdType type) {
-        super(type);
+    public IdServiceLockImpl(IdType type, MachineIdProvider machineIdProvider) {
+        super(type, machineIdProvider);
     }
 
     @Override
@@ -63,8 +67,9 @@ public class IdServiceLockImpl extends AbstractIdService implements IdService {
 
     /**
      * 校验是否时间回拨
+     *
      * @param lastTimestamp 最后生成ID的时间戳
-     * @param timestamp 生成下一个id的时间戳
+     * @param timestamp     生成下一个id的时间戳
      */
     private void validateTimestamp(long lastTimestamp, long timestamp) {
         if (timestamp < lastTimestamp) {
@@ -82,8 +87,8 @@ public class IdServiceLockImpl extends AbstractIdService implements IdService {
     protected long waitUntilNextTimeUnit() {
         if (logger.isDebugEnabled())
             logger.info(String.format("Ids are used out during %d in machine %d. Waiting till next %s.",
-                    lastTimestamp, machineId,
-                    idType == IdType.MAX_PEAK ? "second" : "milisecond"));
+                lastTimestamp, machineId,
+                idType == IdType.MAX_PEAK ? "second" : "milisecond"));
 
         long timestamp = this.genTime();
         // 循环等待
