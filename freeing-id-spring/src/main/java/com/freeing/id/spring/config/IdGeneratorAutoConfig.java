@@ -1,13 +1,10 @@
 package com.freeing.id.spring.config;
 
-import com.freeing.id.core.enums.IdType;
 import com.freeing.id.core.provider.MachineIdProvider;
 import com.freeing.id.core.provider.impl.DefaultMachineIdProvider;
 import com.freeing.id.core.provider.impl.IpConfigurableMachineIdProvider;
 import com.freeing.id.core.provider.impl.PropertyMachineIdProvider;
-import com.freeing.id.manager.IdManager;
-import com.freeing.id.service.AbstractIdService;
-import com.freeing.id.service.impl.IdServiceLockImpl;
+import com.freeing.id.factory.IdServiceFactory;
 import com.freeing.id.spring.property.IdGeneratorProperty;
 import com.freeing.id.spring.property.MachineIpConfigProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +45,6 @@ public class IdGeneratorAutoConfig {
 
     @ConditionalOnProperty(name = "id.generator.provider", havingValue = "ip")
     @ConditionalOnMissingBean(MachineIdProvider.class)
-    @DependsOn({"machineIpConfigProperty"})
     @Bean
     public MachineIdProvider ipConfigurableMachineIdProvider(MachineIpConfigProperty machineIpConfigProperty) {
         return new IpConfigurableMachineIdProvider(machineIpConfigProperty.getIpMap());
@@ -56,12 +52,11 @@ public class IdGeneratorAutoConfig {
 
     @Bean
     @ConditionalOnBean(MachineIdProvider.class)
-    public IdManager idManager(MachineIdProvider machineIdProvider) {
-        AbstractIdService defaultIdService = new IdServiceLockImpl(IdType.parse((int)idGeneratorProperty.getType()),
-                                                                    machineIdProvider);
-        defaultIdService.setEpoch(idGeneratorProperty.getEpoch());
-        defaultIdService.setVersion(idGeneratorProperty.getVersion());
-        defaultIdService.setGenMethod(idGeneratorProperty.getGenMethod());
-        return new IdManager(defaultIdService);
+    public IdServiceFactory idManager(MachineIdProvider machineIdProvider) {
+        return new IdServiceFactory(idGeneratorProperty.getEpoch(),
+            idGeneratorProperty.getVersion(),
+            idGeneratorProperty.getType(),
+            idGeneratorProperty.getGenMethod(),
+            machineIdProvider);
     }
 }

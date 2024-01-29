@@ -2,7 +2,7 @@ package com.freeing.id.rest.netty.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.freeing.id.core.bean.Id;
-import com.freeing.id.manager.IdManager;
+import com.freeing.id.factory.IdServiceFactory;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -45,10 +45,10 @@ public class RestNettyServerHandler extends ChannelInboundHandlerAdapter {
     private static final String ACTION_MAKEID = "/makeid";
 
 
-    private IdManager idManager;
+    private IdServiceFactory idServiceFactory;
 
-    public RestNettyServerHandler(IdManager idManager) {
-        this.idManager = idManager;
+    public RestNettyServerHandler(IdServiceFactory idServiceFactory) {
+        this.idServiceFactory = idServiceFactory;
     }
 
     @Override
@@ -103,16 +103,16 @@ public class RestNettyServerHandler extends ChannelInboundHandlerAdapter {
         StringBuilder sbContent = new StringBuilder();
 
         if (ACTION_GENID.equals(uri.getPath())) {
-            long idl = idManager.genId();
+            long idl = idServiceFactory.get().genId();
             logger.trace("Generated id: {}", idl);
             sbContent.append(idl);
         } else if (ACTION_EXPID.equals(uri.getPath())) {
-            Id ido = idManager.expId(id);
+            Id ido = idServiceFactory.get().expId(id);
             logger.trace("Explained id: {}", ido);
             String jo = JSON.toJSONString(ido);
             sbContent.append(jo);
         } else if (ACTION_TRANSTIME.equals(uri.getPath())) {
-            Date date = idManager.transTime(time);
+            Date date = idServiceFactory.get().transTime(time);
             logger.trace("Time: {} ", date);
             sbContent.append(date);
         } else if (ACTION_MAKEID.equals(uri.getPath())) {
@@ -122,15 +122,16 @@ public class RestNettyServerHandler extends ChannelInboundHandlerAdapter {
             } else if (version == -1) {
                 if (type == -1) {
                     if (genmethod == -1) {
-                        madeId = machine == -1 ? idManager.makeId(time, seq) : idManager.makeId(time, seq, machine);
+                        madeId = machine == -1 ? idServiceFactory.get().makeId(time, seq) :
+                            idServiceFactory.get().makeId(time, seq, machine);
                     } else {
-                        madeId = idManager.makeId(genmethod, time, seq, machine);
+                        madeId = idServiceFactory.get().makeId(genmethod, time, seq, machine);
                     }
                 } else {
-                    madeId = idManager.makeId(type, genmethod, time, seq, machine);
+                    madeId = idServiceFactory.get().makeId(type, genmethod, time, seq, machine);
                 }
             } else {
-                madeId = idManager.makeId(version, type, genmethod, time, seq, machine);
+                madeId = idServiceFactory.get().makeId(version, type, genmethod, time, seq, machine);
             }
 
 			logger.trace("Id: {}", madeId);

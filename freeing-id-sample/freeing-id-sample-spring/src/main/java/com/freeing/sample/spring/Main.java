@@ -1,7 +1,7 @@
 package com.freeing.sample.spring;
 
 import com.freeing.id.core.bean.Id;
-import com.freeing.id.manager.IdManager;
+import com.freeing.id.factory.IdServiceFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -10,10 +10,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Main {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Config.class, args);
-        IdManager idManager = context.getBean(IdManager.class);
-        long id = idManager.genId();
+        IdServiceFactory idServiceFactory = context.getBean(IdServiceFactory.class);
+        long id = idServiceFactory.get().genId();
         System.out.println(id);
-        Id expId = idManager.expId(id);
+        Id expId = idServiceFactory.get().expId(id);
         System.out.println(expId);
     }
 }

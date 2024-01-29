@@ -1,6 +1,6 @@
 package com.freeing.id.rest.netty.handler;
 
-import com.freeing.id.manager.IdManager;
+import com.freeing.id.factory.IdServiceFactory;
 import com.freeing.id.rest.netty.context.ApplicationHolder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -15,7 +15,7 @@ public class RestNettyServerInitializer extends ChannelInitializer<SocketChannel
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline p = socketChannel.pipeline();
         p.addLast("codec", new HttpServerCodec());
-        IdManager idManager = ApplicationHolder.getApplicationContext().getBean(IdManager.class);
-        p.addLast("handler", new RestNettyServerHandler(idManager));
+        IdServiceFactory idServiceFactory = ApplicationHolder.getApplicationContext().getBean(IdServiceFactory.class);
+        p.addLast("handler", new RestNettyServerHandler(idServiceFactory));
     }
 }

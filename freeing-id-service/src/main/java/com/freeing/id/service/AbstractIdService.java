@@ -20,11 +20,6 @@ public abstract class AbstractIdService implements IdService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * 初始化状态
-     */
-    protected boolean initOK = false;
-
-    /**
      * 开始时间
      * 2015/1/1 0:0:0
      */
@@ -50,7 +45,7 @@ public abstract class AbstractIdService implements IdService {
         init();
     }
 
-    public void init() {
+    private void init() {
         this.machineId = machineIdProvider.getMachineId();
         if (machineId < 0 || machineId >= 1024) {
             logger.error("The machine ID is not configured less than 1024 and more than 0 so that id Service refuses to start.");
@@ -60,11 +55,6 @@ public abstract class AbstractIdService implements IdService {
 
         this.type = idType.getCode();
         setIdConverter(new IdConverterImpl());
-        finishInit();
-    }
-
-    private void finishInit() {
-        initOK = true;
     }
 
     @Override
@@ -148,10 +138,6 @@ public abstract class AbstractIdService implements IdService {
     }
 
     /* ------------------------------------ setter ----------------------------------- */
-
-    public boolean isInitOK() {
-        return initOK;
-    }
 
     public void setEpoch(long epoch) {
         this.epoch = epoch;
